@@ -14,14 +14,14 @@ func CheckPrime(this js.Value, args []js.Value) interface{} {
 		js.Global().Get("document").Call("getElementById", "answer").Set("innerText", "Please enter a number")
 		return nil
 	}
-
-	value, err := strconv.ParseInt(valueStr, 10, 64)
-	if err != nil {
+	_ = strconv.IntSize
+	bigInt := new(big.Int)
+	_, success := bigInt.SetString(valueStr, 10)
+	if !success {
 		js.Global().Get("document").Call("getElementById", "answer").Set("innerText", "Invalid number")
 		return nil
 	}
 
-	bigInt := big.NewInt(value)
 	if bigInt.ProbablyPrime(0) {
 		js.Global().Get("document").Call("getElementById", "answer").Set("innerText", "It's prime")
 	} else {
